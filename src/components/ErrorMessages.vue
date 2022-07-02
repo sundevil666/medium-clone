@@ -5,7 +5,7 @@
 <script>
 
 export default {
-  name: 'ErrorMessage',
+  name: 'ErrorMessages',
   props: {
     message: {
       type: String,

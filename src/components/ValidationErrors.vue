@@ -1,13 +1,30 @@
 <template>
-$END$
+  <ul class="error-messages">
+    <li v-for="item in errorMessages" :key="item">{{item}}</li>
+  </ul>
 </template>
 
 <script>
+
 export default {
-name: "ValidationErrors"
+  name: 'ValidationErrors',
+  props: {
+    validationErrors: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    errorMessages() {
+      return Object.keys(this.validationErrors).map(name => {
+        const messages = this.validationErrors[name].join(', ')
+        return `${name} -> ${messages}`
+      })
+    }
+  }
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

@@ -1,13 +1,99 @@
 <template>
-$END$
+  <div class="editor-page">
+    <div class="container page">
+      <div class="row">
+        <div class="col-md-10 offset-md-1 col-xs-12">
+          <ValidationErrors v-if="validationErrors" :validation-errors="validationErrors" />
+          <form @submit.prevent="onSubmit">
+            <fieldset>
+              <fieldset class="form-group">
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  placeholder="Article title"
+                  v-model="title"
+                />
+              </fieldset>
+              <fieldset class="form-group">
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  placeholder="Description"
+                  v-model="description"
+                />
+              </fieldset>
+              <fieldset class="form-group">
+                <textarea
+                  class="form-control form-control-lg"
+                  placeholder="What is this article about?"
+                  v-model="body"
+                ></textarea>
+              </fieldset>
+              <fieldset class="form-group">
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  placeholder="Enter tags"
+                  v-model="tagList"
+                />
+              </fieldset>
+              <fieldset class="form-group">
+                <button
+                  type="submit"
+                  class="btn btn-lg pull-xs-right btn-primary"
+                  :disabled="isSubmitting"
+                >
+                  Publish Article
+                </button>
+              </fieldset>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import ValidationErrors from '@/components/ValidationErrors'
+
 export default {
-name: "ArticleForm"
+  name: 'ArticleForm',
+  components: {
+    ValidationErrors
+  },
+  props: {
+    initialValues: {
+      type: Object,
+      required: true,
+    },
+    validationErrors: {
+      type: Object,
+      default: null,
+    },
+    isSubmitting: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      title: this.initialValues.title,
+      description: this.initialValues.description,
+      body: this.initialValues.body,
+      tagList: this.initialValues.tagList.join(' '),
+    }
+  },
+  methods: {
+    onSubmit() {
+      const form = {
+        title: this.title,
+        description: this.description,
+        body: this.body,
+        tagList: this.tagList.split(' '),
+      }
+      this.$emit('articleSubmit', form)
+    }
+  }
 }
 </script>
-
-<style scoped>
-
-</style>
